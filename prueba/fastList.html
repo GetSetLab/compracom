@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
+	<meta charset="UTF-8">
+	<style>
+
+		*{
+			font-family: Roboto, Arial, sans-serif;
+		}
+		body{
+			padding: 0px;
+			margin: 0px;
+		}	
+		#content{
+			width: auto;
+			max-width: 900px;
+			margin: 0 auto;
+			min-height: 450px;
+		}
+		#nav{
+			width: 100%;
+			float: left;
+			height: 10vh;
+			line-height: 7vh;
+			background-color: buttonface;
+			opacity: 0.6;
+		}
+		#nav div{
+			display: inline-block;
+			width: 21%;
+			float: left;
+			padding-top: 10px;
+		}
+		#title{
+			padding-left: 5%;
+		}
+		#calendar{
+			text-align: center;
+			width: 50% !important;
+			
+		}
+		#share{
+			text-align: right;
+			padding-right: 2%;
+		}
+		#listContent{
+			float: left;
+			width: 100%;
+		}
+		#list{
+			margin: 0 auto;
+			border: 1px solid grey;
+			border-radius: 12px;
+			width: 90%;
+			height: 85vh;
+			overflow: scroll;
+		}
+		.product{
+			display:inline-block;
+			border: 0.5px solid grey;
+			border-radius: 12px;
+			margin: 5px;
+			font-size: 24px;
+			text-align: center;
+			width: 45%;
+			max-width: 200px;
+			text-align: center;
+		}
+		.product span{
+			width: 100%;
+			display: inline-block;
+			display:inline-block;
+		}
+
+		.product .img img{			
+			height: 95px;
+			margin-top: 5px;
+		}
+		#control{
+			margin: 0 auto;
+			border-radius: 12px;
+			width: 90%;
+			height: 15vh;
+			max-width: 810px;
+			bottom: 5vh;
+			position: fixed;
+			background-color: buttonface;
+		}
+		#totalPrice{
+			width: 100%;
+			text-align: center;
+			font-size: 20px;
+			margin-left: 10px;
+			margin-top: 15px;
+			float: left;
+		}
+		.buttonControl{
+			height: 6vh;
+			margin: 5px;
+			border-radius: 24px;
+			background-color: white;
+			opacity: 0.8;
+		}
+		#leftControl{
+			width: 60%;
+			float: left;
+		}
+		#delete button{
+			border: solid 1px buttonface;
+			color: black;
+			width: 100%;
+		}
+		#add button{
+			border: solid 1px blue;
+			color: blue;
+			float: right;
+			width: 30%;
+			height: 14vh;
+		}
+	</style>
+</head>
+<body>
+	<div id="content">
+		<div id="nav">
+			<div id="title" onclick="window.location.href ='index.html';">Volver</div>
+			<div id="calendar">Añadir a Calendario</div>
+			<div id="share" onclick="window.location.href ='share.html'">Compartir</div>
+		</div>
+		<div id="listContent">
+			<div id="list">
+				<div id="products">
+					<div class="product">
+						<span class="img"><img src="aceite.jpg"></span>
+						<span class="name">Aceite de oliva</span>
+						<span class="price">3€</span>
+					</div>
+				</div>
+				<div id="control">
+					<div id="leftControl">
+						<span id="totalPrice">Precio total: 3€</span>
+						<span id="delete"><button class="buttonControl">Eliminar Productos</button></span>
+					</div>
+					<span id="add"><button class="buttonControl" onclick="window.location.href ='products.html';">Añadir Productos</button></span>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<script type="text/javascript">
+		
+	</script>
+</body>
+</html>
