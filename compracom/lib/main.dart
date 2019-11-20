@@ -27,15 +27,14 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  String textData = "ini";
-  List<Widget> _contatos = new List.generate(_count, (int i) => new ContactRow());
+  String textData = "init";
 
   @override
   Widget build(BuildContext context){
     getData();
     return Scaffold(
       appBar: AppBar(
-        title: Text("rafa"),
+        title: Text(textData),
         centerTitle: true
       ),
       body: new Center(
@@ -48,6 +47,12 @@ class _MyHomePageState extends State<MyHomePage> {
             new Text(
               textData,
               style: Theme.of(context).textTheme.display1,
+            ),
+            new Container(
+              margin: const EdgeInsets.all(10.0),
+              color: Colors.amber[600],
+              width: 48.0,
+              height: 48.0,
             ),
           ],
         ),

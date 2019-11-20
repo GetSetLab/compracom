@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
+	<meta charset="UTF-8">
+	<style>
+
+		*{
+			font-family: Roboto, Arial, sans-serif;
+		}
+		body{
+			padding: 0px;
+			margin: 0px;
+		}	
+		#content{
+			width: auto;
+			max-width: 900px;
+			margin: 0 auto;
+		}
+		#nav{
+			width: 100%;
+			float: left;
+			height: 10vh;
+			line-height: 7vh;
+			background-color: buttonface;
+			opacity: 0.6;
+		}
+		#title{
+			float: left;
+			margin: 10px;
+		}
+		#user{
+			float: right;
+			margin: 10px;
+		}
+		#options {
+			float: left;
+			width: 100%;
+			height: 90vh;
+			text-align: center;
+		}
+		.option{
+			width: 90%;
+			border: none;
+			margin: 15px auto;
+			height: 25%;
+			text-align: center;
+			border-radius: 12px;
+			font-size: 24px;
+			opacity: 0.95;
+		}
+
+		* {box-sizing: border-box;}
+		ul {list-style-type: none;}
+		
+		#calendar {
+			padding: 10px;
+		}
+		
+		.month {
+		  padding: 70px 25px;
+		  width: 100%;
+		  background: #1abc9c;
+		  text-align: center;
+		}
+		
+		.month ul {
+		  margin: 0;
+		  padding: 0;
+		}
+		
+		.month ul li {
+		  color: white;
+		  font-size: 20px;
+		  text-transform: uppercase;
+		  letter-spacing: 3px;
+		}
+		
+		.month .prev {
+		  float: left;
+		  padding-top: 10px;
+		}
+		
+		.month .next {
+		  float: right;
+		  padding-top: 10px;
+		}
+		
+		.weekdays {
+		  margin: 0;
+		  padding: 10px 0;
+		  background-color: #ddd;
+		}
+		
+		.weekdays li {
+		  display: inline-block;
+		  width: 13%;
+		  color: #666;
+		  text-align: center;
+		}
+		
+		.days {
+		  padding: 10px 0;
+		  background: #eee;
+		  margin: 0;
+		}
+		
+		.days li {
+		  list-style-type: none;
+		  display: inline-block;
+		  width: 13.5%;
+		  text-align: center;
+		  margin-bottom: 5px;
+		  font-size:16px;
+		  color: #777;
+		}
+		
+		input.active[type=submit] {
+		  	width: 90%;
+    		background-color: #4CAF50;
+    		border-color: red;
+    		color: white;
+    		padding: 3px 9px;
+    		text-decoration: none;
+    		margin: 4px 0px;
+    		cursor: pointer;
+		}
+
+		input.day[type=submit] {
+ 			width: 90%;
+    		background-color: #4CAF50;
+    		border: none;
+    		color: white;
+    		padding: 3px 9px;
+    		text-decoration: none;
+    		margin: 4px 0px;
+    		cursor: pointer;
+		}
+
+		@media (max-width: 580px) {
+
+  			.weekdays li {
+  				width: 12.5%
+  			}
+  		}
+
+  		@media (max-width: 450px) {
+
+  			.weekdays li {
+  				width: 11.5%
+  			}
+
+  			.days li {
+  				width: 12.6%
+  			}
+  		}
+
+	</style>
+
+</head>
+<body>
+
+<div id="content">
+
+	<div id="nav">
+		<div id="title" onclick="window.location.href ='index.html';">Volver</div>
+		<div id="user">User</div>
+	</div>
+
+	<div id="options">
+
+		<div id="calendar">
+
+			<div class="month">      
+			  <ul>
+			  	<form>
+			    	<li class="prev"><input type="submit" onclick="menosMes()" value="&#10094;"></li>
+			    	<li class="next"><input type="submit" onclick="masMes()" value="&#10095;"></li>
+			    </form>
+			    <li>
+			      <p id="monthName"></p>
+			      <span style="font-size:18px" id="year"></span>
+			    </li>
+			  </ul>
+			</div>
+			
+			<ul class="weekdays">
+			  <li>Mo</li>
+			  <li>Tu</li>
+			  <li>We</li>
+			  <li>Th</li>
+			  <li>Fr</li>
+			  <li>Sa</li>
+			  <li>Su</li>
+			</ul>
+			
+			<form>
+				
+				<ul class="days" id="days">  
+
+				</ul>
+
+			</form>
+
+		</div>
+
+	</div>
+
+</div>
+
+<script type="text/javascript">
+
+	if (localStorage.getItem("date") === null) { // añadir la fecha a localstorage si no existe
+
+		let tDate = new Date(); //fecha
+		localStorage.setItem("date", tDate); // guardar la fecha en localStorage
+	}
+
+	function verCalendario(dateI){
+
+		function diasEnUnMes(mes, año) { // función para saber cuantos dias tiene el mes
+			return new Date(año, mes, 0).getDate();
+		}
+
+		let date = new Date(dateI); // fecha de entrada
+
+		var fechaActual = new Date(); // fecha actual
+
+		var diasDelmes = diasEnUnMes(date.getMonth()+1, date.getFullYear()); // saber cuantos dias tiene el mes
+
+		var fistDay = new Date(date.getFullYear(), date.getMonth(), 1); //recoger el primer dia de la semana del mes
+
+		var sumarDias = 2; // se utiliza para ordenar el calendario
+
+		if (fistDay.getDay() == 0){
+
+			for (let a = 0; a < 6; a++) { // si el mes empieza por domingo el primer dia es 0 y por lo tanto hay que añadir <li> para ordenar el calendario
+
+				let li = document.createElement("li"); //crear un elemento <li>
+				li.appendChild(document.createTextNode("")); // asignar un dato al <li> en este caso nada
+    	    	document.getElementById("days").appendChild(li); //poner el <li> dentro de la lista
+			}
+
+			sumarDias = 1;
+		}
+
+		var monthNames = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"]; //Nombre de los meses
+
+		document.getElementById("monthName").innerHTML = monthNames[date.getMonth()]; //seleccionar nombre del mes
+	
+		document.getElementById("year").innerHTML = date.getFullYear(); //seleccionar año
+	
+		var conC = 0; // se utiliza para ordenar los dias del mes en el calendario
+	
+		for (let i = 0; i < diasDelmes-1+fistDay.getDay(); i++) { // for para meter los dias del mes en el calendario
+
+			conC++ // incrementar el contador para ordenadar los dias
+
+			let li = document.createElement("li"); //crear un elemento <li>
+			let input = document.createElement("input") //crear un elemento <input>
+			input.type = "submit"; // añadir type submit al boton
+
+			if (i+1 < fistDay.getDay()){ // if para empezar a contar en el dia de la semana en el que empieza el mes y ordenadar el calendario
+
+				li.appendChild(document.createTextNode("")); // asignar un dato al <li> en este caso nada
+    	    	document.getElementById("days").appendChild(li); //poner el <li> dentro de la lista
+			}
+			else {
+
+				//input.className = "day"; // añadir clase active al <input>
+				//input.value = (i+sumarDias-fistDay.getDay()); // asignar valor al input
+				//li.appendChild(input); // añadir el <inpu> al <li>
+				//document.getElementById("days").appendChild(li); // añadir el <li> a la lista
+
+				document.getElementById("days").innerHTML += "<li><input class='day' type='submit' value='"+(i+sumarDias-fistDay.getDay())+"' onclick='return marcar(this)'></li>"
+
+				if (fechaActual.getFullYear() === date.getFullYear() && fechaActual.getMonth() === date.getMonth() && fechaActual.getDate() === (i+sumarDias-fistDay.getDay())){ // if para marcar el dia actual
+
+					input.className = "active"; // añadir clase active al <input>
+				}
+
+    		}
+		}
+	
+		for (var z = conC; z < 42; z++) { // for para ordenar el calendario
+			
+			let li = document.createElement("li"); //crear un elemento <li>
+			li.appendChild(document.createTextNode("")); // añadir datos al <li>
+			document.getElementById("days").appendChild(li); // añadir el <li> a la lista
+		}
+
+	}
+
+	function masMes(){
+
+		let tDate = new Date(localStorage.getItem("date"));
+		tDate.setMonth(tDate.getMonth() + 1);
+		localStorage.setItem("date", tDate);
+	}
+
+	function menosMes(){
+
+		let tDate = new Date(localStorage.getItem("date"));
+		tDate.setMonth(tDate.getMonth() - 1);
+		localStorage.setItem("date", tDate);
+	}
+
+	verCalendario(localStorage.getItem("date"));
+
+	function marcar(input){
+
+		alert("Le diste al día "+input.value);
+
+		return false;
+	}
+
+</script>
+
+</body>
+</html>
