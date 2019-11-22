@@ -28,10 +28,12 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
   String textData = "init";
+  Widget containerList = new Column();
 
   @override
   Widget build(BuildContext context){
     getData();
+
     return Scaffold(
       appBar: AppBar(
         title: Text(textData),
@@ -42,29 +44,45 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             new Text(
-              'You have pushed the button this many times:',
+              'No ha cargado :(',
             ),
             new Text(
               textData,
               style: Theme.of(context).textTheme.display1,
             ),
-            new Container(
-              margin: const EdgeInsets.all(10.0),
-              color: Colors.amber[600],
-              width: 48.0,
-              height: 48.0,
-            ),
+            containerList,
           ],
         ),
       ),
     );
   }
 
-  Future getData() async{
+  Future<String> getData() async{
     var url = 'http://192.168.10.63/server/bd.php';
     http.Response response = await http.get(url);
     var data = jsonDecode(response.body);
-    textData = data["col"];
+    getContainerList(context, data);
+  }
+
+  Future getContainerList(context, data) async{
+    var texts = new List<Widget>();
+    for(var value in data){
+      var txt = new Text(
+        value["col"]+ value["col2"],
+        style: Theme.of(context).textTheme.display1,
+      );
+      texts.add(txt);
+    }
+    containerList =
+      new Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            new Text(
+              'Ha cargado',
+            ),
+            Column(children: texts,),
+          ],
+      );
   }
 }
 
