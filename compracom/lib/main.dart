@@ -13,42 +13,29 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'CompraCom'),
+      home: Home(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-  final String title;
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
+class Home extends StatelessWidget {
 
-class _MyHomePageState extends State<MyHomePage> {
-
-  String textData = "init";
   Widget containerList = new Column();
 
   @override
   Widget build(BuildContext context){
-    getData();
-
+    getData(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(textData),
+        title: Text("CompraCom"),
         centerTitle: true
       ),
-      body: new Center(
+      body: SingleChildScrollView(
         child: new Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             new Text(
-              'No ha cargado :(',
-            ),
-            new Text(
-              textData,
-              style: Theme.of(context).textTheme.display1,
+              'Productos',
             ),
             containerList,
           ],
@@ -57,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Future<String> getData() async{
+  Future<String> getData(context) async{
     var url = 'http://192.168.10.63/server/bd.php';
     http.Response response = await http.get(url);
     var data = jsonDecode(response.body);
@@ -67,9 +54,24 @@ class _MyHomePageState extends State<MyHomePage> {
   Future getContainerList(context, data) async{
     var texts = new List<Widget>();
     for(var value in data){
-      var txt = new Text(
-        value["col"]+ value["col2"],
-        style: Theme.of(context).textTheme.display1,
+      var txt = Card(
+        child: Center(
+          child: Column(
+            children: <Widget>[
+              ListTile(
+                leading: FlutterLogo(),
+                title: Text(value["col"]+ value["col2"]),
+                trailing: RaisedButton(
+                  onPressed: null,
+                  child: Text(
+                      'Añadir',
+                      style: TextStyle(fontSize: 20)
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       );
       texts.add(txt);
     }
@@ -77,15 +79,32 @@ class _MyHomePageState extends State<MyHomePage> {
       new Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            new Text(
-              'Ha cargado',
-            ),
             Column(children: texts,),
           ],
       );
   }
 }
 
-
+class Product extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+          title: Text("CompraCom"),
+          centerTitle: true
+      ),
+      body: SingleChildScrollView(
+        child: new Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            new Text(
+              'DETALLES DEL PRODUCTO',
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
 
