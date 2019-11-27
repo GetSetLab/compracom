@@ -6,22 +6,28 @@ import 'dart:convert';
 void main() async => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return new MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
+      theme: new ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Home(),
+      home: new MyHomePage(title: 'Flutter Hello World'),
     );
   }
 }
 
-class Home extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
+  MyHomePage({Key key, this.title}) : super(key: key);
+  final String title;
+  @override
+  _MyHomePageState createState() => new _MyHomePageState();
+}
 
+class _MyHomePageState extends State<MyHomePage> {
   Widget containerList = new Column();
-
   @override
   Widget build(BuildContext context){
     getData(context);
@@ -45,7 +51,7 @@ class Home extends StatelessWidget {
   }
 
   Future<String> getData(context) async{
-    var url = 'http://192.168.10.63/server/bd.php';
+    var url = 'http://192.168.10.63/getsetlab/index.php';
     http.Response response = await http.get(url);
     var data = jsonDecode(response.body);
     getContainerList(context, data);
@@ -59,8 +65,8 @@ class Home extends StatelessWidget {
           child: Column(
             children: <Widget>[
               ListTile(
-                leading: FlutterLogo(),
-                title: Text(value["col"]+ value["col2"]),
+                leading: Image.memory(base64Decode(value["picture"])),
+                title: Text(value["name"]+ value["price"]),
                 trailing: RaisedButton(
                   onPressed: null,
                   child: Text(
@@ -75,13 +81,14 @@ class Home extends StatelessWidget {
       );
       texts.add(txt);
     }
-    containerList =
-      new Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Column(children: texts,),
-          ],
+    setState(() {
+      containerList = new Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Column(children: texts,),
+        ],
       );
+    });
   }
 }
 
