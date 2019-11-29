@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       theme: new ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: new MyHomePage(title: 'Flutter Hello World'),
+      home: new Login(),
     );
   }
 }
@@ -25,6 +25,8 @@ class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => new _MyHomePageState();
 }
+
+
 
 class _MyHomePageState extends State<MyHomePage> {
   Widget containerList = new Column();
@@ -52,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<String> getData(context) async{
     var url = 'http://192.168.10.63/getsetlab/index.php';
-    http.Response response = await http.get(url);
+    http.Response response = await http.post(url, body: {'pruebaPost': 'yeah'});
     var data = jsonDecode(response.body);
     getContainerList(context, data);
   }
@@ -90,9 +92,14 @@ class _MyHomePageState extends State<MyHomePage> {
       );
     });
   }
+
+
 }
 
-class Product extends StatelessWidget {
+class Login extends StatelessWidget {
+  String _user;
+  String _pass;
+  final _loginFormKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,17 +108,34 @@ class Product extends StatelessWidget {
           centerTitle: true
       ),
       body: SingleChildScrollView(
-        child: new Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            new Text(
-              'DETALLES DEL PRODUCTO',
-            ),
-          ],
+        child: Form(
+          key: _loginFormKey,
+          child: new Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              TextFormField(
+                  onSaved: (value) => _user = value,
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(labelText: "Email Address")),
+              TextFormField(
+                  onSaved: (value) => _pass = value,
+                  obscureText: true,
+                  decoration: InputDecoration(labelText: "Password")),
+              RaisedButton(child: Text("LOGIN"), onPressed: ()async{
+                final form = _loginFormKey.currentState;
+                form.save();tryLogin();
+              }),
+            ],
+          ),
         ),
       ),
     );
   }
+
+  Future<String> tryLogin() async{
+    var url = 'http://192.168.10.63/getsetlab/index.php';
+    http.Response response = await http.post(url, body: {'username': _user, 'password': _pass});
+
+    print(jsonDecode(response.body));
+  }
 }
-
-
